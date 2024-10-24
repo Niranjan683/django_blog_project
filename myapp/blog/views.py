@@ -8,8 +8,7 @@ def index(request):
     return render(request,'index.html')
 
 def detail(request,id):
-    return HttpResponse(f"You are viewing post detail page. And the the ID is {id}")
-    
+    return render (request,'detail.html')    
 def old_url_redirect(request):
     return redirect(reverse('blog:new_page_url'))
 
