@@ -1,6 +1,6 @@
 from typing import Any
 from blog.models import Post
-
+from django.db import connection
 from django.core.management.base import BaseCommand
 
 
@@ -11,6 +11,8 @@ class Command(BaseCommand):
 
         #deleting existing data
         Post.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("ALTER TABLE blog_post AUTO_INCREMENT = 1;")
 
         titles = [
             "The Future of AI",
