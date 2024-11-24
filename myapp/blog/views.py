@@ -4,7 +4,7 @@ from django.urls import reverse
 import logging
 from .models import Post,AboutUs
 from django.core.paginator import Paginator
-from .forms import ContactForm
+from .forms import ContactForm, RegisterForm
 # Create your views here.
 # static demo data
 #posts=[
@@ -50,7 +50,7 @@ def old_url_redirect(request):
 def new_url_view(request):
     return HttpResponse("This is the new urls")
 
-def contact_view(request):
+def contact(request):
     if request.method == "POST":
         #logger = logging.getLogger("TESTING")
         form=ContactForm(request.POST)
@@ -74,6 +74,21 @@ def contact_view(request):
 
     return render (request,'contact.html')    
 
-def about_view(request):
-    aboutus_content= AboutUs.objects.first().content
+def about(request):
+    aboutus_content= AboutUs.objects.first()
+    if aboutus_content is None or not aboutus_content.content:
+        aboutus_content = "Default content goes here" ## default content when there is no content
+    else:
+        aboutus_content= aboutus_content.content
+        
     return render (request,'about.html',{'aboutus_content':aboutus_content})
+
+
+def register(request):
+    form = RegisterForm()
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()  ## creates the user data
+            print("registration succesful")
+    return render(request, 'register.html', {'form':form})
