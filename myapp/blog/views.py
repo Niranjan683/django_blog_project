@@ -89,6 +89,9 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()  ## creates the user data
+            user =  form.save(commit=False)  ## creates the user data
+            user.set_password(form.cleaned_data['password']) # this line of code is used for password HASHING
+            user.save() 
+            
             print("registration succesful")
     return render(request, 'register.html', {'form':form})
