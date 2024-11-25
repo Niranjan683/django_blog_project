@@ -16,8 +16,15 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                
                     {% endfor %}
+
+                    <!-- Non field Error -->
+                   {% for error in form.non_field_errors %}
+                   <div class = "alert alert_-danger "> 
+                        <span class = "text-dangers">{{ error }}</span>
+                   </div>
+
+
                 <div class="my-3">
                     <form method="post">
                         {%csrf_token%}
