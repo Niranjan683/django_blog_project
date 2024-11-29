@@ -20,10 +20,18 @@
 
                     <!-- Non field Error -->
                    {% for error in form.non_field_errors %}
-                   <div class = "alert alert_-danger "> 
+                   <div class = "alert alert-danger "> 
                         <span class = "text-dangers">{{ error }}</span>
                    </div>
-
+                    {% endfor %}
+                   <!-- Succes messages-->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
 
                 <div class="my-3">
                     <form method="post">
@@ -52,5 +60,6 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
     

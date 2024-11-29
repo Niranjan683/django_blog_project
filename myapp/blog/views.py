@@ -4,7 +4,10 @@ from django.urls import reverse
 import logging
 from .models import Post,AboutUs
 from django.core.paginator import Paginator
-from .forms import ContactForm, RegisterForm
+from .forms import ContactForm, LoginForm, RegisterForm
+from django.contrib import messages
+from django.contrib.auth import authenticate,login as auth_login
+
 # Create your views here.
 # static demo data
 #posts=[
@@ -92,6 +95,25 @@ def register(request):
             user =  form.save(commit=False)  ## creates the user data
             user.set_password(form.cleaned_data['password']) # this line of code is used for password HASHING
             user.save() 
-            
-            print("registration succesful")
+            messages.success(request,'Reigistration Successful, Now you can login')
+        
+    
     return render(request, 'register.html', {'form':form})
+
+
+def login(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username,password=password)
+            if user is not None:
+                auth_login(request,user)
+                return redirect('/dashboard')
+    return render (request,'login.html',{'form':form})
+
+
+def dashboard(request):
+    return render (request,'dashboard.html')
