@@ -6,26 +6,8 @@
             <div class="col-4">
                 <h3>Login</h3>
                 <div class="">
-                    <!-- Error messages -->
-                    <!-- IN VALID FORM SUBMISSION-->                
-                    {% for field in form %}
-                    {% if  field.errors%}
-                        <div class = "col=12">
-                            <span class = "fw-bold">{{field.label_tag}}</span>
-                            {% for error in field.errors %}
-                            <span class = "text-danger">{{error}}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {% endfor %}
+                    {% include 'includes/errors.html' %}
                 </div>
-                 <!-- Non field Error -->
-                 {% for error in form.non_field_errors %}
-                 <div class = "alert alert-danger "> 
-                      <span class = "text-dangers">{{ error }}</span>
-                 </div>
-                  {% endfor %}
-    
                 <div class="col-12">
                     <span class="text-danger"></span>
                 </div>

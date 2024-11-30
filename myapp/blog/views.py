@@ -116,4 +116,5 @@ def login(request):
 
 
 def dashboard(request):
-    return render (request,'dashboard.html')
+    blog_title = "My Posts"
+    return render (request,'dashboard.html',{'blog_title':blog_title})
