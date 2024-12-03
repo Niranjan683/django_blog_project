@@ -6,7 +6,7 @@ from .models import Post,AboutUs
 from django.core.paginator import Paginator
 from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib import messages
-from django.contrib.auth import authenticate,login as auth_login
+from django.contrib.auth import authenticate,login as auth_login, logout as auth_logout
 
 # Create your views here.
 # static demo data
@@ -96,7 +96,7 @@ def register(request):
             user.set_password(form.cleaned_data['password']) # this line of code is used for password HASHING
             user.save() 
             messages.success(request,'Reigistration Successful, Now you can login')
-        
+            return redirect('/login')
     
     return render(request, 'register.html', {'form':form})
 
@@ -118,3 +118,7 @@ def login(request):
 def dashboard(request):
     blog_title = "My Posts"
     return render (request,'dashboard.html',{'blog_title':blog_title})
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/index')
