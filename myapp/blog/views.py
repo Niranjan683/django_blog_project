@@ -122,3 +122,8 @@ def dashboard(request):
 def logout(request):
     auth_logout(request)
     return redirect('/index')
+
+def forgot_password(request):
+    return render(request,'forgot_password.html')
+
+

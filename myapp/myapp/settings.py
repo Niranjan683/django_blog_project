@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'myapp.middleware.RedirectAuthenticatedUserMiddleware',
+    'myapp.middleware.RestrictUnauthenticatedUserMiddleware',
 ]
 
 ROOT_URLCONF = 'myapp.urls'
@@ -83,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog',
         'USER':'root',
-        'PASSWORD':'Niranjan683!@#',
+        'PASSWORD':'niranjan683',
         'HOST':'localhost',
         'PORT':'3306'
     }
