@@ -2,11 +2,20 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404
 from django.urls import reverse
 import logging
+
 from .models import Post,AboutUs
 from django.core.paginator import Paginator
-from .forms import ContactForm, LoginForm, RegisterForm
+from .forms import ContactForm, ForgotPasswordForm, LoginForm, RegisterForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 # Create your views here.
 # static demo data
@@ -124,6 +133,23 @@ def logout(request):
     return redirect('/index')
 
 def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = User.objects.get(email = email)
+            # send email to reset password
+            token = default_token_generator.make_token(user)
+            uid= urlsafe_base64_encode(force_bytes(user.pk)) # where pk is a primary 
+            current_site = get_current_site(request) #this holds the information about the domain where domain is 127.0.0.1:8000
+            domain = current_site.domain
+            subject = "Reset Password Requested"    
+            message = render_to_string("reset_password_email.html",{'domain' : domain, "uid": uid, 'token': token})
+
+            send_mail(subject,message,'noreply@example.com',[email])
     return render(request,'forgot_password.html')
 
+
+def reset_password(request):
+    pass
 
